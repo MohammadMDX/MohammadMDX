@@ -22,7 +22,7 @@ jobs:
       - name: Generate Snake SVG files
         uses: Platane/snk@v4
         with:
-          github_user_name: MohammadMDX
+          github_user_name: muhammad
           outputs: |
             dist/github-contribution-grid-snake.svg
             dist/github-contribution-grid-snake-dark.svg
@@ -33,15 +33,11 @@ jobs:
           # Backup original README
           cp README.md README.md.bak
 
-          # Replace old snake links with the new ones
-          sed -i '/<picture>/,/<\/picture>/c\
-<div align="center">\
-  <picture>\
-    <source media=\"(prefers-color-scheme: dark)\" srcset=\"https://raw.githubusercontent.com/muhammad/muhammad/output/github-contribution-grid-snake-dark.svg\" />\
-    <source media=\"(prefers-color-scheme: light)\" srcset=\"https://raw.githubusercontent.com/muhammad/muhammad/output/github-contribution-grid-snake.svg\" />\
-    <img alt=\"github contribution grid snake animation\" src=\"https://raw.githubusercontent.com/muhammad/muhammad/output/github-contribution-grid-snake.svg\" />\
-  </picture>\
-</div>' README.md
+          # Replace snake section
+          awk 'BEGIN{skip=0}
+               /<picture>/{skip=1; print "<div align=\"center\">\n  <picture>\n    <source media=\"(prefers-color-scheme: dark)\" srcset=\"https://raw.githubusercontent.com/muhammad/muhammad/output/github-contribution-grid-snake-dark.svg\" />\n    <source media=\"(prefers-color-scheme: light)\" srcset=\"https://raw.githubusercontent.com/muhammad/muhammad/output/github-contribution-grid-snake.svg\" />\n    <img alt=\"github contribution grid snake animation\" src=\"https://raw.githubusercontent.com/muhammad/muhammad/output/github-contribution-grid-snake.svg\" />\n  </picture>\n</div>"; next}
+               /<\/picture>/{skip=0; next}
+               !skip{print}' README.md.bak > README.md
 
       - name: Commit and push changes
         env:
