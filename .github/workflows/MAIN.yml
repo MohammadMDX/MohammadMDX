@@ -1,19 +1,17 @@
-name: Generate Snake Animation
+name: Generate Snake and Update README
 
 on:
   schedule:
-    - cron: '0 0 * * *'
-  workflow_dispatch: {}
+    - cron: '0 0 * * *'  # daily at midnight UTC
+  workflow_dispatch: {}   # manual trigger
 
 permissions:
   contents: write
-  pages: write
-  id-token: write
 
 jobs:
   generate-snake:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
 
     steps:
       - name: Checkout repository
@@ -22,7 +20,6 @@ jobs:
           persist-credentials: false
 
       - name: Generate Snake SVG files
-        # Upgrade from v3 → v4
         uses: Platane/snk@v4
         with:
           github_user_name: MohammadMDX
@@ -30,24 +27,28 @@ jobs:
             dist/github-contribution-grid-snake.svg
             dist/github-contribution-grid-snake-dark.svg
 
-      - name: Push generated files to output branch
+      - name: Update README with new snake links
+        run: |
+          set -e
+          # Backup original README
+          cp README.md README.md.bak
+
+          # Replace old snake links with the new ones
+          sed -i '/<picture>/,/<\/picture>/c\
+<div align="center">\
+  <picture>\
+    <source media=\"(prefers-color-scheme: dark)\" srcset=\"https://raw.githubusercontent.com/muhammad/muhammad/output/github-contribution-grid-snake-dark.svg\" />\
+    <source media=\"(prefers-color-scheme: light)\" srcset=\"https://raw.githubusercontent.com/muhammad/muhammad/output/github-contribution-grid-snake.svg\" />\
+    <img alt=\"github contribution grid snake animation\" src=\"https://raw.githubusercontent.com/muhammad/muhammad/output/github-contribution-grid-snake.svg\" />\
+  </picture>\
+</div>' README.md
+
+      - name: Commit and push changes
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          set -e
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
-          # Create or switch to the output branch
-          if git show-ref --verify --quiet refs/heads/output; then
-            git checkout output
-            git rm -rf .
-          else
-            git checkout --orphan output
-          fi
-
-          # Copy generated files, commit if there are changes, push
-          cp -r dist/* .
-          git add -A
-          git commit -m "Generate contribution snake animation" || echo "No changes to commit"
-          git push -f origin HEAD:output
+          git add README.md
+          git commit -m "Update snake animation in README" || echo "No changes to commit"
+          git push
