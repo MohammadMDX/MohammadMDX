@@ -9,12 +9,17 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    steps:
-      # 1. Checkout repository
-      - uses: actions/checkout@v3
+    # allow this job to push commits
+    permissions:
+      contents: write
 
-      # 2. Generate snake (correct action)
-      - name: Generate Snake Animation
+    steps:
+      # 1) Checkout the repo
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # 2) Generate the snake files
+      - name: Generate Snake (SVG + GIF)
         uses: Platane/snk@v3
         with:
           github_user_name: MohammadMDX
@@ -22,11 +27,11 @@ jobs:
             dist/github-contribution-grid-snake.svg
             dist/github-contribution-grid-snake.gif
 
-      # 3. Commit and push result to output branch
-      - name: Push Snake to Output Branch
+      # 3) Commit and push to `output` branch
+      - name: Push Snake to output branch
         uses: ad-m/github-push-action@v0.8.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: output
           force: true
-          directory: dist
+          message: "chore: update contribution snake"
