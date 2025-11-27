@@ -49,17 +49,7 @@
 
 ### 🐍 Contribution Snake
 
-<p align="center">
-  <picture>
-    <!-- Dark mode version -->
-    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/MohammadMDX/MohammadMDX-MohammadMDX/output/dist/github-contribution-grid-snake-dark.svg" />
-    <!-- Light mode version -->
-    <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/MohammadMDX/MohammadMDX-MohammadMDX/output/dist/github-contribution-grid-snake.svg" />
-    <!-- Fallback -->
-    <img alt="GitHub contribution snake animation" src="https://raw.githubusercontent.com/MohammadMDX/MohammadMDX-MohammadMDX/output/dist/github-contribution-grid-snake.svg" />
-  </picture>
-</p>
-
+![Neon snake](https://raw.githubusercontent.com/MohammadMDX/MohammadMDX-MohammadMDX/output/dist/github-contribution-grid-snake-neon.gif)
 
 
 
