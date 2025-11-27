@@ -47,3 +47,4 @@
   <a href="https://www.linkedin.com/in/muhammad-bin-sajid-1b6651163/" target="_blank"><img src="https://img.shields.io/static/v1?message=LinkedIn&logo=linkedin&label=&color=0077B5&logoColor=white&style=for-the-badge" height="35" alt="linkedin logo" /></a>  
 </div>  
 
+![Snake animation](https://raw.githubusercontent.com/MohammadMDX/MohammadMDX/output/dist/github-contribution-grid-snake.svg)
