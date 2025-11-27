@@ -1,0 +1,32 @@
+name: Generate Snake
+
+on:
+  schedule:
+    - cron: "0 */6 * * *"
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout repository
+      - uses: actions/checkout@v3
+
+      # 2. Generate snake (correct action)
+      - name: Generate Snake Animation
+        uses: Platane/snk@v3
+        with:
+          github_user_name: MohammadMDX
+          outputs: |
+            dist/github-contribution-grid-snake.svg
+            dist/github-contribution-grid-snake.gif
+
+      # 3. Commit and push result to output branch
+      - name: Push Snake to Output Branch
+        uses: ad-m/github-push-action@v0.8.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: output
+          force: true
+          directory: dist
